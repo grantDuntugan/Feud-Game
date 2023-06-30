@@ -1,0 +1,84 @@
+html, body {
+    margin: 0;
+    height: 100%;
+}
+.q-disp {
+    background: radial-gradient(ellipse at center, hsla(34, 77%, 52%, 0.595) 0%, #edaf339c 30%, transparent 50%);
+    background-size: 40px 40px;
+    background-repeat: repeat-x repeat-y;
+    background-position: 5px center;
+    width: 100vw;
+    height: 100vw;
+}
+
+.board {
+    background-color: #213061;
+}
+
+.answer {
+    min-height: 100%;
+    min-width: 100%;
+}
+
+.response, .points {
+    min-height: 100%;
+}
+
+.points {
+    border-left-style: solid;
+    border-width: 10px;
+    border-color: white;
+}
+
+.concealed {
+    background: radial-gradient(ellipse at center, hsl(245, 81%, 55%) 0%, #2628c0 90%);
+    background-repeat: no-repeat;
+    width: 33%;
+    height: 90%;
+    border-style: none;
+    border-radius: 90px;
+
+    font-size: xxx-large;
+}
+
+.answer-box {
+    min-height: 16vh;
+    border-style: solid;
+    border-radius: large;
+    border-color: white;
+    background-image: linear-gradient(rgb(2, 162, 255), rgb(114, 203, 255), rgb(2, 162, 255));
+}
+
+.fade-out {
+    opacity: 1;
+	animation-name: fadeOutOpacity;
+	animation-iteration-count: 1;
+	animation-timing-function: ease-in;
+	animation-duration: 2s;
+}
+
+.fade-in {
+	opacity: 1;
+	animation-name: fadeInOpacity;
+	animation-iteration-count: 1;
+	animation-timing-function: ease-in;
+	animation-duration: 1.5s;
+}
+
+@keyframes fadeOutOpacity {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+@keyframes fadeInOpacity {
+	0% {
+		opacity: 0;
+	}
+	100% {
+		opacity: 1;
+	}
+}
