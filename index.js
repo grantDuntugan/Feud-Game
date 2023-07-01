@@ -1,5 +1,9 @@
+import { allRevealed, transitionToQuestion } from "./myLib.js";
+
 let body = document.getElementsByTagName('body')[0];
 let transitionState = "title";
+let readyForNextQuestion = false;
+
 body.addEventListener('click', () => {
     if (transitionState === "title") {
         let sect = document.getElementsByTagName("section")[0];
@@ -18,21 +22,40 @@ body.addEventListener('click', () => {
     }
 
     else if (transitionState == "displaying question") {
-        console.log("dflsk")
         let question = document.querySelector(".question")
-        question.classList.toggle("fade-out");
+        question.classList.remove("fade-in");
+        question.classList.add("fade-out");
         setTimeout(() => {
-            question.classList.toggle("d-none");
+            question.classList.add("d-none");
+            question.classList.remove("fade-out");
             let board = document.querySelector(".board");
-            board.classList.toggle("d-none");
-            board.classList.toggle("fade-in");
+            board.classList.remove("d-none");
+            board.classList.add("fade-in");
+            let secQues = document.querySelector(".secondary-question");
+            secQues.classList.remove('d-none');
+            secQues.classList.add("fade-in");
         }, 1500);
         transitionState = "displaying board";
     }
 
+    else if (readyForNextQuestion) {
+        console.log("idk")
+        readyForNextQuestion = false;
+        transitionToQuestion();
+        //TODO: update questions, points, etc.
+        transitionState = "displaying question";
+    }
+
     //TODO: switch back to displaying question under some circumstance like arrow button
+    else if (transitionState == "displaying board" && allRevealed()) {
+        readyForNextQuestion = true;
+        console.log('ready')
+    }
+
 
 });
+
+
 
 let answerBoxes = document.querySelectorAll(".answer-box");
 let concealed = document.querySelectorAll(".concealed");
@@ -44,3 +67,4 @@ for (let i = 0; i < answerBoxes.length; i++) {
         answers[i].classList.add("fade-in");
     });
 }
+
