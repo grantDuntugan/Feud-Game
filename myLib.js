@@ -1,3 +1,35 @@
+export function cleanString(info) {
+    let obj = {};
+
+    info = info.split("\n");
+    for (let i = 0; i < info.length; i++) {
+        info[i] = info[i].replace(/[^a-zA-Z0-9\- /]/g, '');
+    }
+
+    let qPos = 0;
+    let aPos = 1;
+    while (aPos < info.length) {
+        let currQuestion = info[qPos];
+        obj[currQuestion] = {};
+        while (info[aPos] !== "") {
+            if (aPos >= info.length) {
+                break;
+            }
+
+            let rawAnsString = info[aPos];
+            let cleanAns = rawAnsString.split("-")
+            cleanAns[0] = cleanAns[0].trim();
+            cleanAns[1] = cleanAns[1].trim();
+
+            obj[currQuestion][cleanAns[0]] = cleanAns[1];
+            aPos++;
+        }
+        qPos = aPos + 1;
+        aPos += 2;
+    }
+    console.log(obj);
+}
+
 export function resetBoxes() {
     let concealed = document.querySelectorAll(".concealed");
     let answers = document.querySelectorAll(".answer");

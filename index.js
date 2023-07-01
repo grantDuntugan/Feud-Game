@@ -1,11 +1,45 @@
-import { allRevealed, transitionToQuestion } from "./myLib.js";
+import { allRevealed, transitionToQuestion, cleanString } from "./myLib.js";
+
 
 let body = document.getElementsByTagName('body')[0];
 let transitionState = "title";
+let recievedFile = false;
 let readyForNextQuestion = false;
+let info = "";
+
+let fileLoadPromise = new Promise(function(resolve, reject) {
+    let fileButton = document.querySelector("input[type='file']");
+    fileButton.addEventListener('change', () => {
+        resolve(fileButton.files[0]);
+    });
+});
+
+fileLoadPromise.then(
+    result => {
+        let fileProcessedPromise = new Promise(function(resolve, reject) {
+            let fr = new FileReader();
+            fr.readAsText(result);
+            fr.onload = function() {
+                resolve(fr.result);
+            }
+
+        });
+        fileProcessedPromise.then(
+            result => {
+                info = result;
+                recievedFile = true;
+                cleanString(info);
+                alert("info loaded!");
+            },
+            reject => alert("spaghetti code :(")
+        )
+    },
+    error => alert("Spaghetti code strikes again.")
+)
 
 body.addEventListener('click', () => {
-    if (transitionState === "title") {
+    if (transitionState === "title" && recievedFile) {
+        console.log(info);
         let sect = document.getElementsByTagName("section")[0];
         sect.classList.add("fade-out");
         setTimeout(() => {
