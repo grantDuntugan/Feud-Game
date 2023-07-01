@@ -1,11 +1,20 @@
-import { allRevealed, transitionToQuestion, cleanString } from "./myLib.js";
+import { allRevealed, transitionToQuestion, cleanString, loadQA, cleanBoard } from "./myLib.js";
 
+// Game Questions
+let obj = {};
+let questions = [];
 
-let body = document.getElementsByTagName('body')[0];
+// Game State
 let transitionState = "title";
 let recievedFile = false;
 let readyForNextQuestion = false;
+let questionPos = 0;
+
+// File Processing
 let info = "";
+
+// DOM info
+let body = document.getElementsByTagName('body')[0];
 
 let fileLoadPromise = new Promise(function(resolve, reject) {
     let fileButton = document.querySelector("input[type='file']");
@@ -28,7 +37,9 @@ fileLoadPromise.then(
             result => {
                 info = result;
                 recievedFile = true;
-                cleanString(info);
+                info = cleanString(info);
+                obj = info[0];
+                questions = info[1];
                 alert("info loaded!");
             },
             reject => alert("spaghetti code :(")
@@ -37,8 +48,11 @@ fileLoadPromise.then(
     error => alert("Spaghetti code strikes again.")
 )
 
+cleanBoard();
+
 body.addEventListener('click', () => {
     if (transitionState === "title" && recievedFile) {
+        loadQA(questionPos, obj, questions);
         console.log(info);
         let sect = document.getElementsByTagName("section")[0];
         sect.classList.add("fade-out");
@@ -73,17 +87,15 @@ body.addEventListener('click', () => {
     }
 
     else if (readyForNextQuestion) {
-        console.log("idk")
         readyForNextQuestion = false;
-        transitionToQuestion();
-        //TODO: update questions, points, etc.
+        transitionToQuestion(questionPos, obj, questions);
         transitionState = "displaying question";
     }
 
     //TODO: switch back to displaying question under some circumstance like arrow button
     else if (transitionState == "displaying board" && allRevealed()) {
+        questionPos++;
         readyForNextQuestion = true;
-        console.log('ready')
     }
 
 

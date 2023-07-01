@@ -1,5 +1,6 @@
 export function cleanString(info) {
     let obj = {};
+    let questions = [];
 
     info = info.split("\n");
     for (let i = 0; i < info.length; i++) {
@@ -10,6 +11,7 @@ export function cleanString(info) {
     let aPos = 1;
     while (aPos < info.length) {
         let currQuestion = info[qPos];
+        questions.push(currQuestion);
         obj[currQuestion] = {};
         while (info[aPos] !== "") {
             if (aPos >= info.length) {
@@ -27,7 +29,37 @@ export function cleanString(info) {
         qPos = aPos + 1;
         aPos += 2;
     }
-    console.log(obj);
+    return [obj, questions];
+}
+
+export function cleanBoard() {
+    document.querySelector("h2").textContent = "";
+    document.querySelector("h3").textContent = "";
+
+    // What is a cool color? (board stuff below)
+    document.querySelector(".secondary-question").textContent = "";
+    for (let i = 0; i < 8; i++) {
+        document.getElementById(`answer-slot-${i + 1}`).textContent = "";
+        document.getElementById(`point-slot-${i + 1}`).textContent = "0";
+    }
+}
+
+export function loadQA(pos, obj, questions) {
+    let currQuestion = questions[pos];
+    let answers = obj[currQuestion];
+
+    // Question #..., what is a cool color?
+    document.querySelector("h2").textContent = `Question ${pos + 1}`;
+    document.querySelector("h3").textContent = currQuestion;
+
+    // What is a cool color? (board stuff below)
+    document.querySelector(".secondary-question").textContent = currQuestion;
+    let i = 0;
+    for (const [key, value] of Object.entries(answers)) {
+        document.getElementById(`answer-slot-${i + 1}`).textContent = key;
+        document.getElementById(`point-slot-${i + 1}`).textContent = value;
+        i++;
+    }
 }
 
 export function resetBoxes() {
@@ -50,7 +82,8 @@ export function allRevealed() {
     return true;
 }
 
-export function transitionToQuestion() {
+// TODO: param dirty fix lol
+export function transitionToQuestion(pos, obj, questions) {
     let board = document.querySelector(".board");
     let secQues = document.querySelector(".secondary-question");
     secQues.classList.remove("fade-in");
@@ -70,5 +103,6 @@ export function transitionToQuestion() {
         document.querySelector(".question").classList.remove("d-none");
 
         resetBoxes();
+        loadQA(pos, obj, questions);
     }, 1500);
 }
