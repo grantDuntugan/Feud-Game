@@ -42,6 +42,11 @@ export function cleanBoard() {
         document.getElementById(`answer-slot-${i + 1}`).textContent = "";
         document.getElementById(`point-slot-${i + 1}`).textContent = "0";
     }
+
+    let xes = document.querySelectorAll(".x-symb::after");
+    for (let i = 0; i < xes.length; i++) {
+        xes[i].style.backgroundColor = "grey";
+    }
 }
 
 export function loadQA(pos, obj, questions) {
@@ -60,15 +65,33 @@ export function loadQA(pos, obj, questions) {
         document.getElementById(`point-slot-${i + 1}`).textContent = value;
         i++;
     }
+
+    for (i = i; i < 8; i++) {
+        document.getElementById(`answer-slot-${i + 1}`).textContent = "";
+        document.getElementById(`point-slot-${i + 1}`).textContent = "";
+        document.getElementById(`concealed-${i + 1}`).classList.add("d-none");
+        document.getElementById(`answer-${i + 1}`).classList.remove("d-none");
+        document.getElementById(`point-slot-${i + 1}`).style.borderLeftWidth = "0px";
+    }
 }
 
 export function resetBoxes() {
     let concealed = document.querySelectorAll(".concealed");
     let answers = document.querySelectorAll(".answer");
+    let points = document.querySelectorAll(".points");
     for (let i = 0; i < concealed.length; i++) {
         concealed[i].classList.remove("d-none");
         answers[i].classList.add("d-none");
         answers[i].classList.remove("fade-in");
+        points[i].style.borderLeftWidth = "10px";
+    }
+
+    let xes = document.getElementsByClassName("x-symb");
+    for (let i = 0; i < xes.length; i++) {
+        if (!xes[i].classList.contains("empty-x-symb")) {
+            xes[i].classList.add("empty-x-symb");
+        }
+        xes[i].classList.remove("filled-x-symb");
     }
 }
 
@@ -90,6 +113,8 @@ export function transitionToQuestion(pos, obj, questions) {
     secQues.classList.add("fade-out");
     board.classList.remove("fade-in");
     board.classList.add("fade-out");
+    document.querySelector(".incorrect-space").classList.remove("fade-in");
+    document.querySelector(".incorrect-space").classList.add("fade-out");
     setTimeout(() => {
         secQues.classList.add("d-none");
         board.classList.add("d-none");
@@ -101,7 +126,7 @@ export function transitionToQuestion(pos, obj, questions) {
         question.classList.remove("fade-out");
         question.classList.add("fade-in");
         document.querySelector(".question").classList.remove("d-none");
-
+        document.querySelector(".incorrect-space").classList.add("d-none");
         resetBoxes();
         loadQA(pos, obj, questions);
     }, 1500);

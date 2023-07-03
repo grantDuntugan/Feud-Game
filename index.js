@@ -82,14 +82,23 @@ body.addEventListener('click', () => {
             let secQues = document.querySelector(".secondary-question");
             secQues.classList.remove('d-none');
             secQues.classList.add("fade-in");
+            let xBoard = document.querySelector(".incorrect-space");
+            xBoard.classList.remove("d-none");
+            xBoard.classList.remove("fade-out");
+            xBoard.classList.add("fade-in");
         }, 1500);
         transitionState = "displaying board";
     }
 
     else if (readyForNextQuestion) {
         readyForNextQuestion = false;
-        transitionToQuestion(questionPos, obj, questions);
-        transitionState = "displaying question";
+        if (questionPos >= questions.length) {
+            alert("Game over!");
+        }
+        else {
+            transitionToQuestion(questionPos, obj, questions);
+            transitionState = "displaying question";
+        }
     }
 
     //TODO: switch back to displaying question under some circumstance like arrow button
@@ -101,7 +110,15 @@ body.addEventListener('click', () => {
 
 });
 
-
+body.addEventListener('keypress', (e) => {
+    if (e.key === "x") {
+        let xes = document.getElementsByClassName("empty-x-symb");
+        if (xes.length > 0) {
+            xes[0].classList.add("filled-x-symb");
+            xes[0].classList.remove("empty-x-symb");
+        }
+    }
+});
 
 let answerBoxes = document.querySelectorAll(".answer-box");
 let concealed = document.querySelectorAll(".concealed");
