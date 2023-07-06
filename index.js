@@ -111,13 +111,22 @@ body.addEventListener('click', () => {
 });
 
 body.addEventListener('keypress', (e) => {
-    if (e.key === "x") {
+    if (e.key === "x" && transitionState == "displaying board") {
         let xes = document.getElementsByClassName("empty-x-symb");
         if (xes.length > 0) {
             xes[0].classList.add("filled-x-symb");
             xes[0].classList.remove("empty-x-symb");
         }
     }
+
+    else if (e.key == "c" && transitionState == "displaying board") {
+        let xes = document.getElementsByClassName("filled-x-symb");
+        if (xes.length > 0) {
+            xes[xes.length - 1].classList.add("empty-x-symb");
+            xes[xes.length - 1].classList.remove("filled-x-symb");
+        }
+    }
+
 });
 
 let answerBoxes = document.querySelectorAll(".answer-box");

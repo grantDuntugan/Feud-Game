@@ -4,7 +4,7 @@ export function cleanString(info) {
 
     info = info.split("\n");
     for (let i = 0; i < info.length; i++) {
-        info[i] = info[i].replace(/[^a-zA-Z0-9\- /]/g, '');
+        info[i] = info[i].replace(/[^a-zA-Z0-9.?\- /]/g, '');
     }
 
     let qPos = 0;
