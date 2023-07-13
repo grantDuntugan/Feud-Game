@@ -2,6 +2,12 @@ html, body {
     margin: 0;
     height: 100%;
 }
+
+img {
+    width: 70vw;
+    height: 70vh;
+}
+
 .q-disp {
     background: radial-gradient(ellipse at center, hsla(34, 77%, 52%, 0.595) 0%, #edaf339c 30%, transparent 50%);
     background-size: 40px 40px;
