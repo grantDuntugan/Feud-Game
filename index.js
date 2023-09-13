@@ -109,10 +109,12 @@ body.addEventListener("click", () => {
   }
 });
 
+let incorrectAudio = new Audio("strike.mp3");
 body.addEventListener("keypress", (e) => {
   if (e.key === "x" && transitionState == "displaying board") {
     let xes = document.getElementsByClassName("empty-x-symb");
     if (xes.length > 0) {
+      incorrectAudio.play();
       xes[0].classList.add("filled-x-symb");
       xes[0].classList.remove("empty-x-symb");
     }
@@ -125,11 +127,13 @@ body.addEventListener("keypress", (e) => {
   }
 });
 
+let correctAudio = new Audio('correct.mp3');
 let answerBoxes = document.querySelectorAll(".answer-box");
 let concealed = document.querySelectorAll(".concealed");
 let answers = document.querySelectorAll(".answer");
 for (let i = 0; i < answerBoxes.length; i++) {
   answerBoxes[i].addEventListener("click", () => {
+    correctAudio.play();
     concealed[i].classList.add("d-none");
     answers[i].classList.remove("d-none");
     answers[i].classList.add("fade-in");
